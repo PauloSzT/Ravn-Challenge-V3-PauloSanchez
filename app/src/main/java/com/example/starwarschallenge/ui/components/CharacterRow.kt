@@ -19,20 +19,6 @@ import androidx.compose.ui.unit.sp
 import com.example.starwarschallenge.R
 
 @Composable
-fun HomeView() {
-    Column() {
-        Header( hasBackIcon = false, title = "Luke Skywalker")
-        Row {
-//            CharacterRow()
-        }
-        //LoadingRow()
-
-
-    }
-}
-
-
-@Composable
 fun CharacterRow(id: String, name: String, description: String) {
     Column(
         modifier = Modifier
@@ -87,60 +73,6 @@ fun CharacterRow(id: String, name: String, description: String) {
 
 }
 
-@Composable
-fun LoadingRow() {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(56.dp)
-            .background(color = Color.White),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center,
-    ) {
-        Image(
-            painter = painterResource(
-                R.drawable.spinner
-            ),
-            contentDescription = null,
-            contentScale = ContentScale.FillBounds,
-            modifier = Modifier
-                .size(16.dp)
-        )
-        Text(
-            text = "Loading",
-            modifier = Modifier.padding(start = 10.dp),
-            fontSize = 17.sp,
-            fontWeight = FontWeight.W700,
-            lineHeight = 20.29.sp,
-            letterSpacing = 0.25.sp,
-            color = Color.Gray
-
-        )
-    }
-}
-
-@Composable
-fun FailedLoading() {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(52.dp)
-            .background(color = Color.White),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center,
-    ) {
-        Text(
-            text = "Failed to Load Data",
-            color = Color.Red,
-            fontSize = 17.sp,
-            fontWeight = FontWeight.Bold
-        )
-    }
-}
-
-
-
-
 @Preview
 @Composable
 fun CharacterRowPreview() {
@@ -154,35 +86,3 @@ fun CharacterRowPreview() {
         }
     }
 }
-
-@Preview
-@Composable
-fun LoadingRowPreview() {
-    MaterialTheme() {
-        Row(
-            modifier = Modifier
-                .width(375.dp)
-                .height(50.dp),
-        ) {
-            LoadingRow()
-        }
-    }
-}
-
-@Preview
-@Composable
-fun FailedLoginPreview() {
-    MaterialTheme {
-        FailedLoading()
-    }
-}
-
-
-@Preview
-@Composable
-fun HomeViewPreview() {
-    MaterialTheme {
-        HomeView()
-    }
-}
-
