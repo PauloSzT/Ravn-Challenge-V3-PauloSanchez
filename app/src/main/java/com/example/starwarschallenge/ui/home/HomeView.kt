@@ -19,7 +19,8 @@ import com.example.starwarschallenge.ui.components.LoadingRow
 @Composable
 fun HomeView(
     viewModel: MainActivityViewModel,
-    callBack: (String) -> Unit
+    callBack: (String) -> Unit,
+    saveFavoriteCallback: (String, Boolean) -> Unit
 ) {
     val charactersList by viewModel.charactersList.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
@@ -38,7 +39,12 @@ fun HomeView(
                         id = character.id,
                         name = character.name,
                         description = "${character.race} from ${character.homePlanet}",
-                        callBack = callBack
+                        isFavorite = character.isFavorite,
+                        callBack = callBack,
+                        favoriteCallBack = {
+                            saveFavoriteCallback(it, !character.isFavorite.value)
+                            character.isFavorite.value = !character.isFavorite.value
+                        }
                     )
                 }
                 if (isLoading) {

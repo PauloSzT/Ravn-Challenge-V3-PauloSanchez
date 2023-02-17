@@ -1,6 +1,7 @@
 package com.example.starwarschallenge.models
 
 import CharactersListQuery
+import kotlinx.coroutines.flow.MutableStateFlow
 
 data class StarWarsCharacter(
     val id: String,
@@ -11,17 +12,18 @@ data class StarWarsCharacter(
     val hairColor: String,
     val skinColor: String,
     val birthYear: String,
-    val vehicles: List<String>
+    val vehicles: List<String>,
+    val isFavorite: MutableStateFlow<Boolean>
 )
 
-fun CharactersListQuery.Data.mapToStarWarsCharacterList(): List<StarWarsCharacter> {
+fun CharactersListQuery.Data.mapToStarWarsCharacterList(favoritesList: List<String>): List<StarWarsCharacter> {
     val charactersPreList = this.allPeople?.people ?: listOf()
     return charactersPreList.mapNotNull { person ->
-        person.mapToStarWarsCharacter()
+        person.mapToStarWarsCharacter(favoritesList.contains(person?.id))
     }
 }
 
-fun CharactersListQuery.Person?.mapToStarWarsCharacter(): StarWarsCharacter {
+fun CharactersListQuery.Person?.mapToStarWarsCharacter(isFavorite: Boolean): StarWarsCharacter {
     return StarWarsCharacter(
         id = this?.id ?: "Unidentified",
         name = this?.name ?: "Unidentified",
@@ -33,6 +35,7 @@ fun CharactersListQuery.Person?.mapToStarWarsCharacter(): StarWarsCharacter {
         birthYear = this?.birthYear ?: "Unidentified",
         vehicles = this?.vehicleConnection?.vehicles?.map { vehicle ->
             vehicle?.name ?: "Unidentified"
-        } ?: listOf()
+        } ?: listOf(),
+        isFavorite = MutableStateFlow(isFavorite)
     )
 }
