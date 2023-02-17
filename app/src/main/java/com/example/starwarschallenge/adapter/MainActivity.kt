@@ -1,4 +1,4 @@
-package com.example.starwarschallenge
+package com.example.starwarschallenge.adapter
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -11,13 +11,15 @@ import androidx.compose.material.Surface
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import com.apollographql.apollo3.api.Adapter
 import com.example.starwarschallenge.ui.components.CharacterRow
 import com.example.starwarschallenge.ui.components.Header
 import com.example.starwarschallenge.ui.theme.StarWarsChallengeTheme
 
 
 class MainActivity : ComponentActivity() {
-    val viewModel: MainActivityViewModel by viewModels()
+
+    private val viewModel: MainActivityViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {

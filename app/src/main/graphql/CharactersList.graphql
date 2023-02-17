@@ -1,0 +1,27 @@
+query CharactersList($after: String) {
+  allPeople(after: $after, first: 5) {
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+    people {
+      id
+      name
+      species {
+        name
+      }
+      homeworld {
+        name
+      }
+      eyeColor
+      hairColor
+      skinColor
+      birthYear
+      vehicleConnection {
+        vehicles {
+          name
+        }
+      }
+    }
+  }
+}
