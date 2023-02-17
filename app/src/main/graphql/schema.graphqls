@@ -29,8 +29,6 @@ type Root {
   node("The ID of an object" id: ID!): Node
 }
 
-scalar DateTime
-
 """
 A connection to a list of items.
 """
@@ -41,7 +39,7 @@ type FilmsConnection {
   pageInfo: PageInfo!
 
   """
-  Information to aid in pagination.
+  A list of edges.
   """
   edges: [FilmsEdge]
 
@@ -136,7 +134,7 @@ type Film implements Node {
   """
   The ISO 8601 date format of film release at original creator country.
   """
-  releaseDate: DateTime!
+  releaseDate: String
 
   speciesConnection(after: String, first: Int, before: String, last: Int): FilmSpeciesConnection
 
@@ -170,6 +168,131 @@ An object with an ID
 interface Node {
   """
   The id of the object.
+  """
+  id: ID!
+}
+
+"""
+A connection to a list of items.
+"""
+type FilmSpeciesConnection {
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+
+  """
+  A list of edges.
+  """
+  edges: [FilmSpeciesEdge]
+
+  """
+  A count of the total number of objects in this connection, ignoring pagination.
+  This allows a client to fetch the first five objects by passing "5" as the
+  argument to "first", then fetch the total count so it could display "5 of 83",
+  for example.
+  """
+  totalCount: Int
+
+  """
+  A list of all of the objects returned in the connection. This is a convenience
+  field provided for quickly exploring the API; rather than querying for
+  "{ edges { node } }" when no edge data is needed, this field can be be used
+  instead. Note that when clients like Relay need to fetch the "cursor" field on
+  the edge to enable efficient pagination, this shortcut cannot be used, and the
+  full "{ edges { node } }" version should be used instead.
+  """
+  species: [Species]
+}
+
+"""
+An edge in a connection.
+"""
+type FilmSpeciesEdge {
+  """
+  The item at the end of the edge
+  """
+  node: Species
+
+  """
+  A cursor for use in pagination
+  """
+  cursor: String!
+}
+
+"""
+A type of person or character within the Star Wars Universe.
+"""
+type Species implements Node {
+  """
+  The name of this species.
+  """
+  name: String
+
+  """
+  The classification of this species, such as "mammal" or "reptile".
+  """
+  classification: String
+
+  """
+  The designation of this species, such as "sentient".
+  """
+  designation: String
+
+  """
+  The average height of this species in centimeters.
+  """
+  averageHeight: Float
+
+  """
+  The average lifespan of this species in years, null if unknown.
+  """
+  averageLifespan: Int
+
+  """
+  Common eye colors for this species, null if this species does not typically
+  have eyes.
+  """
+  eyeColors: [String]
+
+  """
+  Common hair colors for this species, null if this species does not typically
+  have hair.
+  """
+  hairColors: [String]
+
+  """
+  Common skin colors for this species, null if this species does not typically
+  have skin.
+  """
+  skinColors: [String]
+
+  """
+  The language commonly spoken by this species.
+  """
+  language: String
+
+  """
+  A planet that this species originates from.
+  """
+  homeworld: Planet
+
+  personConnection(after: String, first: Int, before: String, last: Int): SpeciesPeopleConnection
+
+  filmConnection(after: String, first: Int, before: String, last: Int): SpeciesFilmsConnection
+
+  """
+  The ISO 8601 date format of the time that this resource was created.
+  """
+  created: String
+
+  """
+  The ISO 8601 date format of the time that this resource was edited.
+  """
+  edited: String
+
+  """
+  The ID of an object
   """
   id: ID!
 }
@@ -210,7 +333,7 @@ type Planet implements Node {
   """
   The average population of sentient beings inhabiting this planet.
   """
-  population: Int
+  population: Float
 
   """
   The climates of this planet.
@@ -223,7 +346,7 @@ type Planet implements Node {
   terrains: [String]
 
   """
-  The percentage of the planet surface that is naturally occuring water or bodies
+  The percentage of the planet surface that is naturally occurring water or bodies
   of water.
   """
   surfaceWater: Float
@@ -258,7 +381,7 @@ type PlanetResidentsConnection {
   pageInfo: PageInfo!
 
   """
-  Information to aid in pagination.
+  A list of edges.
   """
   edges: [PlanetResidentsEdge]
 
@@ -338,7 +461,7 @@ type Person implements Node {
   """
   The mass of the person in kilograms.
   """
-  mass: Int
+  mass: Float
 
   """
   The skin color of this person.
@@ -387,7 +510,7 @@ type PersonFilmsConnection {
   pageInfo: PageInfo!
 
   """
-  Information to aid in pagination.
+  A list of edges.
   """
   edges: [PersonFilmsEdge]
 
@@ -426,179 +549,6 @@ type PersonFilmsEdge {
 }
 
 """
-A type of person or character within the Star Wars Universe.
-"""
-type Species implements Node {
-  """
-  The name of this species.
-  """
-  name: String
-
-  """
-  The classification of this species, such as "mammal" or "reptile".
-  """
-  classification: String
-
-  """
-  The designation of this species, such as "sentient".
-  """
-  designation: String
-
-  """
-  The average height of this species in centimeters.
-  """
-  averageHeight: Float
-
-  """
-  The average lifespan of this species in years.
-  """
-  averageLifespan: Int
-
-  """
-  Common eye colors for this species, null if this species does not typically
-  have eyes.
-  """
-  eyeColors: [String]
-
-  """
-  Common hair colors for this species, null if this species does not typically
-  have hair.
-  """
-  hairColors: [String]
-
-  """
-  Common skin colors for this species, null if this species does not typically
-  have skin.
-  """
-  skinColors: [String]
-
-  """
-  The language commonly spoken by this species.
-  """
-  language: String
-
-  """
-  A planet that this species originates from.
-  """
-  homeworld: Planet
-
-  personConnection(after: String, first: Int, before: String, last: Int): SpeciesPeopleConnection
-
-  filmConnection(after: String, first: Int, before: String, last: Int): SpeciesFilmsConnection
-
-  """
-  The ISO 8601 date format of the time that this resource was created.
-  """
-  created: String
-
-  """
-  The ISO 8601 date format of the time that this resource was edited.
-  """
-  edited: String
-
-  """
-  The ID of an object
-  """
-  id: ID!
-}
-
-"""
-A connection to a list of items.
-"""
-type SpeciesPeopleConnection {
-  """
-  Information to aid in pagination.
-  """
-  pageInfo: PageInfo!
-
-  """
-  Information to aid in pagination.
-  """
-  edges: [SpeciesPeopleEdge]
-
-  """
-  A count of the total number of objects in this connection, ignoring pagination.
-  This allows a client to fetch the first five objects by passing "5" as the
-  argument to "first", then fetch the total count so it could display "5 of 83",
-  for example.
-  """
-  totalCount: Int
-
-  """
-  A list of all of the objects returned in the connection. This is a convenience
-  field provided for quickly exploring the API; rather than querying for
-  "{ edges { node } }" when no edge data is needed, this field can be be used
-  instead. Note that when clients like Relay need to fetch the "cursor" field on
-  the edge to enable efficient pagination, this shortcut cannot be used, and the
-  full "{ edges { node } }" version should be used instead.
-  """
-  people: [Person]
-}
-
-"""
-An edge in a connection.
-"""
-type SpeciesPeopleEdge {
-  """
-  The item at the end of the edge
-  """
-  node: Person
-
-  """
-  A cursor for use in pagination
-  """
-  cursor: String!
-}
-
-"""
-A connection to a list of items.
-"""
-type SpeciesFilmsConnection {
-  """
-  Information to aid in pagination.
-  """
-  pageInfo: PageInfo!
-
-  """
-  Information to aid in pagination.
-  """
-  edges: [SpeciesFilmsEdge]
-
-  """
-  A count of the total number of objects in this connection, ignoring pagination.
-  This allows a client to fetch the first five objects by passing "5" as the
-  argument to "first", then fetch the total count so it could display "5 of 83",
-  for example.
-  """
-  totalCount: Int
-
-  """
-  A list of all of the objects returned in the connection. This is a convenience
-  field provided for quickly exploring the API; rather than querying for
-  "{ edges { node } }" when no edge data is needed, this field can be be used
-  instead. Note that when clients like Relay need to fetch the "cursor" field on
-  the edge to enable efficient pagination, this shortcut cannot be used, and the
-  full "{ edges { node } }" version should be used instead.
-  """
-  films: [Film]
-}
-
-"""
-An edge in a connection.
-"""
-type SpeciesFilmsEdge {
-  """
-  The item at the end of the edge
-  """
-  node: Film
-
-  """
-  A cursor for use in pagination
-  """
-  cursor: String!
-}
-
-"""
 A connection to a list of items.
 """
 type PersonStarshipsConnection {
@@ -608,7 +558,7 @@ type PersonStarshipsConnection {
   pageInfo: PageInfo!
 
   """
-  Information to aid in pagination.
+  A list of edges.
   """
   edges: [PersonStarshipsEdge]
 
@@ -753,7 +703,7 @@ type StarshipPilotsConnection {
   pageInfo: PageInfo!
 
   """
-  Information to aid in pagination.
+  A list of edges.
   """
   edges: [StarshipPilotsEdge]
 
@@ -801,7 +751,7 @@ type StarshipFilmsConnection {
   pageInfo: PageInfo!
 
   """
-  Information to aid in pagination.
+  A list of edges.
   """
   edges: [StarshipFilmsEdge]
 
@@ -849,7 +799,7 @@ type PersonVehiclesConnection {
   pageInfo: PageInfo!
 
   """
-  Information to aid in pagination.
+  A list of edges.
   """
   edges: [PersonVehiclesEdge]
 
@@ -916,7 +866,7 @@ type Vehicle implements Node {
   """
   The cost of this vehicle new, in Galactic Credits.
   """
-  costInCredits: Int
+  costInCredits: Float
 
   """
   The length of this vehicle in meters.
@@ -941,7 +891,7 @@ type Vehicle implements Node {
   """
   The maximum number of kilograms that this vehicle can transport.
   """
-  cargoCapacity: Int
+  cargoCapacity: Float
 
   """
   The maximum length of time that this vehicle can provide consumables for its
@@ -979,7 +929,7 @@ type VehiclePilotsConnection {
   pageInfo: PageInfo!
 
   """
-  Information to aid in pagination.
+  A list of edges.
   """
   edges: [VehiclePilotsEdge]
 
@@ -1027,7 +977,7 @@ type VehicleFilmsConnection {
   pageInfo: PageInfo!
 
   """
-  Information to aid in pagination.
+  A list of edges.
   """
   edges: [VehicleFilmsEdge]
 
@@ -1075,7 +1025,7 @@ type PlanetFilmsConnection {
   pageInfo: PageInfo!
 
   """
-  Information to aid in pagination.
+  A list of edges.
   """
   edges: [PlanetFilmsEdge]
 
@@ -1116,16 +1066,16 @@ type PlanetFilmsEdge {
 """
 A connection to a list of items.
 """
-type FilmSpeciesConnection {
+type SpeciesPeopleConnection {
   """
   Information to aid in pagination.
   """
   pageInfo: PageInfo!
 
   """
-  Information to aid in pagination.
+  A list of edges.
   """
-  edges: [FilmSpeciesEdge]
+  edges: [SpeciesPeopleEdge]
 
   """
   A count of the total number of objects in this connection, ignoring pagination.
@@ -1143,17 +1093,65 @@ type FilmSpeciesConnection {
   the edge to enable efficient pagination, this shortcut cannot be used, and the
   full "{ edges { node } }" version should be used instead.
   """
-  species: [Species]
+  people: [Person]
 }
 
 """
 An edge in a connection.
 """
-type FilmSpeciesEdge {
+type SpeciesPeopleEdge {
   """
   The item at the end of the edge
   """
-  node: Species
+  node: Person
+
+  """
+  A cursor for use in pagination
+  """
+  cursor: String!
+}
+
+"""
+A connection to a list of items.
+"""
+type SpeciesFilmsConnection {
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+
+  """
+  A list of edges.
+  """
+  edges: [SpeciesFilmsEdge]
+
+  """
+  A count of the total number of objects in this connection, ignoring pagination.
+  This allows a client to fetch the first five objects by passing "5" as the
+  argument to "first", then fetch the total count so it could display "5 of 83",
+  for example.
+  """
+  totalCount: Int
+
+  """
+  A list of all of the objects returned in the connection. This is a convenience
+  field provided for quickly exploring the API; rather than querying for
+  "{ edges { node } }" when no edge data is needed, this field can be be used
+  instead. Note that when clients like Relay need to fetch the "cursor" field on
+  the edge to enable efficient pagination, this shortcut cannot be used, and the
+  full "{ edges { node } }" version should be used instead.
+  """
+  films: [Film]
+}
+
+"""
+An edge in a connection.
+"""
+type SpeciesFilmsEdge {
+  """
+  The item at the end of the edge
+  """
+  node: Film
 
   """
   A cursor for use in pagination
@@ -1171,7 +1169,7 @@ type FilmStarshipsConnection {
   pageInfo: PageInfo!
 
   """
-  Information to aid in pagination.
+  A list of edges.
   """
   edges: [FilmStarshipsEdge]
 
@@ -1219,7 +1217,7 @@ type FilmVehiclesConnection {
   pageInfo: PageInfo!
 
   """
-  Information to aid in pagination.
+  A list of edges.
   """
   edges: [FilmVehiclesEdge]
 
@@ -1267,7 +1265,7 @@ type FilmCharactersConnection {
   pageInfo: PageInfo!
 
   """
-  Information to aid in pagination.
+  A list of edges.
   """
   edges: [FilmCharactersEdge]
 
@@ -1315,7 +1313,7 @@ type FilmPlanetsConnection {
   pageInfo: PageInfo!
 
   """
-  Information to aid in pagination.
+  A list of edges.
   """
   edges: [FilmPlanetsEdge]
 
@@ -1363,7 +1361,7 @@ type PeopleConnection {
   pageInfo: PageInfo!
 
   """
-  Information to aid in pagination.
+  A list of edges.
   """
   edges: [PeopleEdge]
 
@@ -1411,7 +1409,7 @@ type PlanetsConnection {
   pageInfo: PageInfo!
 
   """
-  Information to aid in pagination.
+  A list of edges.
   """
   edges: [PlanetsEdge]
 
@@ -1459,7 +1457,7 @@ type SpeciesConnection {
   pageInfo: PageInfo!
 
   """
-  Information to aid in pagination.
+  A list of edges.
   """
   edges: [SpeciesEdge]
 
@@ -1507,7 +1505,7 @@ type StarshipsConnection {
   pageInfo: PageInfo!
 
   """
-  Information to aid in pagination.
+  A list of edges.
   """
   edges: [StarshipsEdge]
 
@@ -1555,7 +1553,7 @@ type VehiclesConnection {
   pageInfo: PageInfo!
 
   """
-  Information to aid in pagination.
+  A list of edges.
   """
   edges: [VehiclesEdge]
 

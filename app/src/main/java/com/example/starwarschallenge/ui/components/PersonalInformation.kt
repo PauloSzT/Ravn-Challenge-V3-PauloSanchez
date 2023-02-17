@@ -3,6 +3,7 @@ package com.example.starwarschallenge.ui.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Divider
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -30,6 +31,7 @@ fun PersonalInformation(information: String, detail: String) {
             Text(
                 text = information,
                 fontSize = 17.sp,
+                style = MaterialTheme.typography.h1,
                 fontWeight = FontWeight.W700,
                 color = Color.Gray,
                 lineHeight = 20.29.sp,
@@ -38,6 +40,7 @@ fun PersonalInformation(information: String, detail: String) {
             Text(
                 text = detail,
                 fontSize = 17.sp,
+                style = MaterialTheme.typography.h1,
                 fontWeight = FontWeight.W700,
                 color = Color.Black,
                 lineHeight = 20.29.sp,

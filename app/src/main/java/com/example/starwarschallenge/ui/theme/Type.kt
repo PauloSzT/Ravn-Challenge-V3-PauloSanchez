@@ -10,10 +10,9 @@ import com.example.starwarschallenge.R
 
 val SFProDisplay = FontFamily(
     Font(R.font.sfprodisplayregular),
-    Font(R.font.sfprodisplaybold)
+    Font(R.font.sfprodisplaybold, FontWeight.Bold)
 )
 
-// Set of Material typography styles to start with
 val Typography = Typography(
     body1 = TextStyle(
         fontFamily = FontFamily.Default,
@@ -22,21 +21,7 @@ val Typography = Typography(
     ),
     h1 = TextStyle(
         fontFamily = SFProDisplay,
-        fontWeight = FontWeight.Normal,
+        fontWeight = FontWeight.Bold,
         fontSize = 17.sp
     )
-
-
-    /* Other default text styles to override
-    button = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.W500,
-        fontSize = 14.sp
-    ),
-    caption = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Normal,
-        fontSize = 12.sp
-    )
-    */
 )

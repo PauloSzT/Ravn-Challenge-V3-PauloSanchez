@@ -40,6 +40,7 @@ fun LoadingRow() {
             text = "Loading",
             modifier = Modifier.padding(start = 10.dp),
             fontSize = 17.sp,
+            style = MaterialTheme.typography.h1,
             fontWeight = FontWeight.W700,
             lineHeight = 20.29.sp,
             letterSpacing = 0.25.sp,

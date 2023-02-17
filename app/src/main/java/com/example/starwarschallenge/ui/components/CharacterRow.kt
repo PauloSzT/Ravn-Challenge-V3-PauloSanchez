@@ -1,7 +1,6 @@
 package com.example.starwarschallenge.ui.components
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
@@ -19,12 +18,18 @@ import androidx.compose.ui.unit.sp
 import com.example.starwarschallenge.R
 
 @Composable
-fun CharacterRow(id: String, name: String, description: String) {
+fun CharacterRow(
+    id: String,
+    name: String,
+    description: String,
+    callBack: (String) -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .background(color = Color.White)
-            .padding(start = 16.dp),
+            .padding(start = 16.dp)
+            .clickable { callBack(id) },
         verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -43,6 +48,7 @@ fun CharacterRow(id: String, name: String, description: String) {
                     text = name,
                     color = Color.Black,
                     fontSize = 17.sp,
+                    style = MaterialTheme.typography.h1,
                     fontWeight = FontWeight.W700,
                     lineHeight = 20.29.sp,
                     letterSpacing = 0.25.sp
@@ -51,9 +57,10 @@ fun CharacterRow(id: String, name: String, description: String) {
                     text = description,
                     color = Color.Gray,
                     fontSize = 14.sp,
+                    style = MaterialTheme.typography.body1,
                     fontWeight = FontWeight.W400,
                     lineHeight = 16.71.sp,
-                    letterSpacing = 1.25.sp
+                    letterSpacing = 0.25.sp
                 )
             }
             Image(
@@ -82,7 +89,7 @@ fun CharacterRowPreview() {
                 .width(375.dp)
                 .height(69.dp),
         ) {
-            CharacterRow(id = "Luke", name = "Luke", description = "Jedi")
+            CharacterRow(id = "Luke", name = "Luke", description = "Jedi") {}
         }
     }
 }
