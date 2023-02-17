@@ -2,6 +2,7 @@ package com.example.starwarschallenge.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
@@ -19,12 +20,18 @@ import androidx.compose.ui.unit.sp
 import com.example.starwarschallenge.R
 
 @Composable
-fun CharacterRow(id: String, name: String, description: String) {
+fun CharacterRow(
+    id: String,
+    name: String,
+    description: String,
+    callBack: (String) -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .background(color = Color.White)
-            .padding(start = 16.dp),
+            .padding(start = 16.dp)
+            .clickable { callBack(id) },
         verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -82,7 +89,7 @@ fun CharacterRowPreview() {
                 .width(375.dp)
                 .height(69.dp),
         ) {
-            CharacterRow(id = "Luke", name = "Luke", description = "Jedi")
+            CharacterRow(id = "Luke", name = "Luke", description = "Jedi") {}
         }
     }
 }
