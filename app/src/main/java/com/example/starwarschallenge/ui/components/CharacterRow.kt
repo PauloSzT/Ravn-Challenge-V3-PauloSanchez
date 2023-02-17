@@ -6,6 +6,8 @@ import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -16,14 +18,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.starwarschallenge.R
+import kotlinx.coroutines.flow.MutableStateFlow
 
 @Composable
 fun CharacterRow(
     id: String,
     name: String,
     description: String,
-    callBack: (String) -> Unit
+    isFavorite: MutableStateFlow<Boolean>,
+    callBack: (String) -> Unit,
+    favoriteCallBack: (String) -> Unit
 ) {
+    val isThisCharacterFavorite by isFavorite.collectAsState()
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -63,17 +69,31 @@ fun CharacterRow(
                     letterSpacing = 0.25.sp
                 )
             }
-            Image(
-                painter = painterResource(
-                    R.drawable.chevron_right
-                ),
-                contentDescription = null,
-                contentScale = ContentScale.FillBounds,
-                modifier = Modifier
-                    .height(12.dp)
-                    .width(7.4.dp)
-            )
-
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Image(
+                    painter = painterResource(
+                        id = if (isThisCharacterFavorite) R.drawable.star_filled else R.drawable.star_empty
+                    ),
+                    contentDescription = "Favorite Icon",
+                    modifier = Modifier
+                        .size(40.dp)
+                        .padding(end = 16.dp)
+                        .clickable { favoriteCallBack(id) }
+                )
+                Image(
+                    painter = painterResource(
+                        R.drawable.chevron_right
+                    ),
+                    contentDescription = "Chevron Right",
+                    contentScale = ContentScale.FillBounds,
+                    modifier = Modifier
+                        .height(12.dp)
+                        .width(7.4.dp)
+                )
+            }
         }
         Divider(color = Color.LightGray, thickness = 1.dp)
     }
@@ -82,14 +102,39 @@ fun CharacterRow(
 
 @Preview
 @Composable
-fun CharacterRowPreview() {
+fun CharacterRowPreviewFilled() {
     MaterialTheme() {
         Row(
             modifier = Modifier
                 .width(375.dp)
                 .height(69.dp),
         ) {
-            CharacterRow(id = "Luke", name = "Luke", description = "Jedi") {}
+            CharacterRow(
+                id = "Luke",
+                name = "Luke",
+                description = "Jedi",
+                isFavorite = MutableStateFlow(true),
+                callBack = {}) {}
         }
     }
 }
+
+@Preview
+@Composable
+fun CharacterRowPreviewEmpty() {
+    MaterialTheme() {
+        Row(
+            modifier = Modifier
+                .width(375.dp)
+                .height(69.dp),
+        ) {
+            CharacterRow(
+                id = "Luke",
+                name = "Luke",
+                description = "Jedi",
+                isFavorite = MutableStateFlow(false),
+                callBack = {}) {}
+        }
+    }
+}
+

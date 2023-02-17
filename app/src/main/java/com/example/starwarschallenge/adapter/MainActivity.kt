@@ -1,5 +1,7 @@
 package com.example.starwarschallenge.adapter
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -18,8 +20,20 @@ import com.example.starwarschallenge.ui.theme.StarWarsChallengeTheme
 class MainActivity : ComponentActivity() {
 
     private val viewModel: MainActivityViewModel by viewModels()
+
+    lateinit var sharedPreferences: SharedPreferences
+
+
+    fun saveOnSharedPreferences(id: String, value: Boolean) {
+        val editor = sharedPreferences.edit()
+        editor.putBoolean(id, value)
+        editor.apply()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        sharedPreferences = getSharedPreferences("Star_wars_challenge_app", Context.MODE_PRIVATE)
+        viewModel.getData(sharedPreferences)
         window.statusBarColor = resources.getColor(R.color.black)
         setContent {
             StarWarsChallengeTheme {
@@ -33,6 +47,8 @@ class MainActivity : ComponentActivity() {
                     } else {
                         HomeView(viewModel = viewModel, callBack = {
                             viewModel.navigateToDetails(it)
+                        }, saveFavoriteCallback = { key, value ->
+                            saveOnSharedPreferences(key, value)
                         })
                     }
                 }
