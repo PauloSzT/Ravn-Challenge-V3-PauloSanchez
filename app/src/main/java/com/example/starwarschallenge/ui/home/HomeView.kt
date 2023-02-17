@@ -25,24 +25,24 @@ fun HomeView(
     val isLoading by viewModel.isLoading.collectAsState()
     val isErrorState by viewModel.isErrorState.collectAsState()
 
-    Column (
-        modifier = Modifier.verticalScroll(rememberScrollState())
-            ){
-        Header(hasBackIcon = false, title = "People of Star Wars") {}
-        if(!isErrorState){
-            charactersList.forEach { character ->
-                CharacterRow(
-                    id = character.id,
-                    name = character.name,
-                    description = "${character.race} from ${character.homePlanet}",
-                    callBack = callBack
-                )
+    Column {
+        Header(hasBackIcon = false, title = "People of Star Wars"){}
+        Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+            if (!isErrorState) {
+                charactersList.forEach { character ->
+                    CharacterRow(
+                        id = character.id,
+                        name = character.name,
+                        description = "${character.race} from ${character.homePlanet}",
+                        callBack = callBack
+                    )
+                }
+                if (isLoading) {
+                    LoadingRow()
+                }
+            } else {
+                FailedLoading()
             }
-            if (isLoading) {
-                LoadingRow()
-            }
-        } else {
-            FailedLoading()
         }
     }
 }
