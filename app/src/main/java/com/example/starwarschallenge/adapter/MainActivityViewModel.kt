@@ -1,6 +1,7 @@
 package com.example.starwarschallenge.adapter
 
 import CharactersListQuery
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.apollographql.apollo3.api.Optional
@@ -8,8 +9,7 @@ import com.apollographql.apollo3.exception.ApolloException
 import com.example.starwarschallenge.models.StarWarsCharacter
 import com.example.starwarschallenge.models.mapToStarWarsCharacterList
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class MainActivityViewModel: ViewModel() {
@@ -23,7 +23,8 @@ class MainActivityViewModel: ViewModel() {
 
     val api = StarWarsApi().getApolloClient()
 
-    var nextCursor: String? = null
+    private var nextCursor: String? = null
+
     init {
         getData()
     }
@@ -33,10 +34,15 @@ class MainActivityViewModel: ViewModel() {
         viewModelScope.launch {
             try {
                 val response = api.query(CharactersListQuery(Optional.presentIfNotNull(nextCursor))).execute()
-                delay(2000)
-                charactersList.value = response.data?.mapToStarWarsCharacterList() ?: listOf()
                 nextCursor = response.data?.allPeople?.pageInfo?.endCursor
+                delay(2000)
+                val newList = charactersList.value.toMutableList()
+                newList.addAll(response.data?.mapToStarWarsCharacterList() ?: listOf())
+                charactersList.value = newList
                 isLoading.value = false
+                if(response.data?.allPeople?.pageInfo?.hasNextPage == true) {
+                    getData()
+                }
             } catch (e: ApolloException) {
                 isLoading.value = false
                 isErrorState.value = true
