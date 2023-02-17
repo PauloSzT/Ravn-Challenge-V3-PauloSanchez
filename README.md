@@ -60,7 +60,7 @@ Application to display Star Wars characters list with details
 
 Contributions, issues, and feature requests are welcome!
 
-Feel free to check the [issues page](https://github.com/PauloSzT/star_wars_challenge/issues).
+Feel free to check the [issues page](https://github.com/PauloSzT/Ravn-Challenge-V3-PauloSanchez/issues).
 
 ## Show your support
 
