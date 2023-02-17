@@ -48,6 +48,7 @@ fun CharacterRow(
                     text = name,
                     color = Color.Black,
                     fontSize = 17.sp,
+                    style = MaterialTheme.typography.h1,
                     fontWeight = FontWeight.W700,
                     lineHeight = 20.29.sp,
                     letterSpacing = 0.25.sp
@@ -56,9 +57,10 @@ fun CharacterRow(
                     text = description,
                     color = Color.Gray,
                     fontSize = 14.sp,
+                    style = MaterialTheme.typography.body1,
                     fontWeight = FontWeight.W400,
                     lineHeight = 16.71.sp,
-                    letterSpacing = 1.25.sp
+                    letterSpacing = 0.25.sp
                 )
             }
             Image(

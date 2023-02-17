@@ -25,7 +25,7 @@ fun Header(
     callBack: () -> Unit
 ) {
     Box(modifier = Modifier.background(color = Color.Black)) {
-        if (hasBackIcon){
+        if (hasBackIcon) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -58,6 +58,7 @@ fun Header(
                 text = title,
                 color = Color.White,
                 fontSize = 17.sp,
+                style = MaterialTheme.typography.h1,
                 fontWeight = FontWeight.W700,
                 lineHeight = 20.29.sp,
                 letterSpacing = 0.25.sp
@@ -70,20 +71,20 @@ fun Header(
 
 @Preview
 @Composable
-fun HeaderPreviewNoIcon(){
-    MaterialTheme(){
+fun HeaderPreviewNoIcon() {
+    MaterialTheme() {
         Header(
             false,
             "People of Star Wars"
         ) {}
     }
-    
+
 }
 
 @Preview
 @Composable
-fun HeaderPreviewIcon(){
-    MaterialTheme(){
+fun HeaderPreviewIcon() {
+    MaterialTheme() {
         Header(
             true,
             "Luke Skywalker"

@@ -28,6 +28,7 @@ fun FailedLoading() {
     ) {
         Text(
             text = "Failed to Load Data",
+            style = MaterialTheme.typography.h1,
             color = Color.Red,
             fontSize = 17.sp,
             fontWeight = FontWeight.Bold
